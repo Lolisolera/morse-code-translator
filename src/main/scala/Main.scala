@@ -4,23 +4,29 @@ object Main extends App {
   println("Welcome to the Morse Code Translator!")
   println("You can enter English (e.g., HELLO) or Morse code (e.g., .... . .-.. .-.. ---).")
   println("When entering Morse code, use '/' to separate words (e.g., .... . .-.. .-.. --- / .-- --- .-. .-.. -..).")
-  println("Type EXIT to quit.")
-
+  println("Type HELP to see the Morse code guide. Type EXIT to quit.")
 
   breakable {
     while (true) {
       val input = InputHandler.getUserInput()
-      if (input.trim.toUpperCase == "EXIT") break
+      val trimmedInput = input.trim.toUpperCase
 
-      val output =
-        if (input.contains(".") || input.contains("-"))
-          Translator.morseToEnglish(input)
-        else
-          Translator.englishToMorse(input)
+      if (trimmedInput == "EXIT") break
 
-      output match {
-        case Right(result) => OutputHandler.printResult(result)
-        case Left(error)   => OutputHandler.printError(error)
+      // Show Morse Guide
+      if (trimmedInput == "HELP") {
+        OutputHandler.printMorseLegend()
+      } else {
+        val output =
+          if (input.contains(".") || input.contains("-"))
+            Translator.morseToEnglish(input)
+          else
+            Translator.englishToMorse(input)
+
+        output match {
+          case Right(result) => OutputHandler.printResult(result)
+          case Left(error)   => OutputHandler.printError(error)
+        }
       }
     }
   }
